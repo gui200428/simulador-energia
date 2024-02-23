@@ -1,0 +1,12 @@
+.infoOptions {
+    margin: 0 80px 0 80px;
+}
+
+.infoOptions p {
+    color: #000;
+    font-weight: 200;
+    font-size: 1.3em;
+    text-align: center;
+    background-color: #efefef;
+    padding: 30px;
+}
