@@ -10,7 +10,6 @@ import ArHiwall from "../assets/ArHiwall.png";
 import Icon from "../assets/pen";
 import Arrow from "../assets/arrow";
 import CurrencyInput from "react-currency-input-field";
-import InputMask from "react-input-mask";
 
 ReactModal.setAppElement("#root");
 
