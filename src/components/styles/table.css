@@ -10,3 +10,212 @@
     background-color: #efefef;
     padding: 30px;
 }
+
+.containerOptions {
+    margin-bottom: 40px;
+}
+
+.options {
+    position: relative;
+    padding: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.options img {
+    display: inline-block;
+    width: 4vw;
+    margin: 15px 25px 15px 25px;
+}
+
+.options-button #pisoteto {
+    margin: 10px 20px 10px 20px;
+    width: 5vw;
+}
+
+.options-button {
+    border: 2px solid #0a50ed;
+    margin: 12px;
+    background: none;
+    padding: 0;
+}
+
+.options-button:hover {
+    background-color: #0a50ed;
+    filter: alpha(opacity=70) !important;
+}
+
+.options-button:hover img {
+    filter: brightness(0) invert(1);
+}
+
+/*
+.modal-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+}
+*/
+
+.modal-content input {
+    margin: 10px 10px 10px 0;
+    padding: 10px;
+    border: 1px solid #0a50ed;
+    border-radius: 5px;
+    background: transparent;
+    color: #0a50ed;
+    font-weight: bold;
+}
+
+.top {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-bottom: 4px solid #0a50ed;
+}
+
+.logoModal {
+    padding: 20px 0 0 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.logoModal img {
+    width: 40px;
+}
+
+.logoModal h1 {
+    font-size: 1em;
+    font-weight: 600;
+    color: #0a50ed;
+    margin-left: 10px;
+}
+
+.imgAr {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imgAr img {
+    width: 14em;
+}
+
+.backArrow {
+    display: flex;
+}
+
+.titleBottom {
+    color: #000;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.buttonOpModal {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttonModal,
+.buttonModal2,
+.buttonModal3 {
+    all: unset;
+    padding: 40px 20px 90px 20px; /* Modificado de '90px' para '20px' */
+}
+.optionsModal {
+    display: flex;
+    align-items: stretch; /* Modificado de 'center' para 'stretch' */
+    justify-content: center;
+}
+
+.inputOptionsModal {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    width: 400px;
+}
+
+.inputOptionsModal input {
+    margin: 10px 10px 10px 0;
+    padding: 10px;
+    border: 1px solid #0a50ed;
+    border-radius: 5px;
+    background: transparent;
+    color: #0a50ed;
+    font-weight: bold;
+}
+
+.inputOptionsModal select {
+    margin: 10px 0 10px 0;
+    padding: 10px;
+    border: 1px solid #0a50ed;
+    border-radius: 5px;
+    background: transparent;
+    color: #000;
+}
+
+.inputOptionsModal select::placeholder {
+    color: #0a50ed;
+}
+
+.modal {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.buttonModal:hover,
+.buttonModal2:hover,
+.buttonModal3:hover {
+    background-color: #e3e8ff;
+}
+
+.titleButtonModal {
+    text-align: center;
+    background-color: #e3e8ff;
+    color: #0a50ed;
+    font-size: 18px;
+    padding: 15px 10px 15px 10px;
+    border: 2px solid #0a50ed;
+}
+
+.buttonModal:hover .titleButtonModal,
+.buttonModal2:hover .titleButtonModal,
+.buttonModal3:hover .titleButtonModal {
+    color: #ffffff; /* Cor do texto do título muda para branco no hover do botão */
+    background-color: #0a50ed;
+}
+
+.textButtonModal {
+    color: #000;
+    font-size: 0.8em;
+    max-width: 90%;
+    margin-left: 4px;
+    text-align: center;
+}
+
+.buttonModal:hover .textButtonModal,
+.buttonModal2:hover .textButtonModal,
+.buttonModal3:hover .textButtonModal {
+    color: #0000ff; /* Cor do texto muda para azul no hover do botão */
+}
+
+.ReactModal__Overlay {
+    z-index: 2;
+}
+
+.menuTariffInput {
+    border: 1px solid #0a50ed;
+    border-radius: 5px;
+    background: transparent;
+    color: #0a50ed;
+    font-weight: bold;
+    font-size: 1.875rem;
+}

@@ -1,8 +1,6 @@
 import { Header } from "./components/header";
-//import { Video } from "./components/videoBg";
-//import { Options } from "./components/options";
-import { Table } from "./components/table";
 import { Home } from "./components/home";
+import { Table } from "./components/table";
 
 function App() {
     return (

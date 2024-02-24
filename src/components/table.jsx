@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import "./styles/table.css";
-//Teste
-import "./styles/options.css";
 import casseteBlue from "../assets/casseteBlue.png";
 import hiwallBlue from "../assets/hiwallBlue.png";
 import pisotetoBlue from "../assets/pisotetoBlue.png";
@@ -9,12 +7,14 @@ import ReactModal from "react-modal";
 import ArHiwall from "../assets/ArHiwall.png";
 import Icon from "../assets/pen";
 import Arrow from "../assets/arrow";
+import Edit from "../assets/edit";
+import CheckMark from "../assets/check";
+import Trash from "../assets/trash";
 import CurrencyInput from "react-currency-input-field";
 
 ReactModal.setAppElement("#root");
 
 export function Table() {
-    //const [modalOpen, setModalOpen] = useState(false);
     const [qtdd, setQtdd] = useState("");
     const [marca, setMarca] = useState("");
     const [tipo, setTipo] = useState("");
@@ -35,7 +35,14 @@ export function Table() {
     // handler para mudar o tamanho da div home quando a tabela estiver com dados
     const handlerBanner = () => {
         const homeDiv = document.querySelector(".home");
-        homeDiv.style.height = "15vh"; // Ou qualquer outro valor que você desejar
+        homeDiv.style.height = "15vh";
+    };
+
+    // Apagar linha da tabela
+    const handleDelete = (index) => {
+        const newData = [...tabelaData];
+        newData.splice(index, 1);
+        setTabelaData(newData);
     };
 
     // Atualizar os valores da tabela (QTDD.)
@@ -91,7 +98,7 @@ export function Table() {
     const handleSubmit = () => {
         //Não permite campos vazios
         if (
-            !qtdd ||
+            //!qtdd ||
             !marca ||
             !tipo ||
             !nome ||
@@ -105,6 +112,7 @@ export function Table() {
             alert("Preencha todos os campos");
             return;
         }
+
         // Fecha o modal se todos os campos estiverem preenchidos
         handleCloseModal();
 
@@ -139,7 +147,7 @@ export function Table() {
         setEconomia(economia); // Atualiza o valor de economia
 
         const newData = {
-            qtdd,
+            qtdd: 1,
             marca,
             tipo,
             nome,
@@ -157,7 +165,6 @@ export function Table() {
         };
 
         setTabelaData([...tabelaData, newData]);
-        //setModalOpen(false);
 
         // Limpa os campos do modal
         // Os inputs não
@@ -169,8 +176,38 @@ export function Table() {
         setConsumoProcel("");
         setFuncionamentoAtual("");
         setFuncionamentoDesejado("");
-        //setTarifa(""); TODO: Não limpar o campo tarifa
+        //setTarifa("");
         //setTipoConsumoProcel("");
+    };
+
+    const [editingTariff, setEditingTariff] = useState(false);
+
+    const handleTariffClick = () => {
+        setEditingTariff(true);
+    };
+
+    const handleTariffChange = (editedTarifaValue) => {
+        setTarifa(editedTarifaValue);
+        //atualizar valores da tabela
+        const newData = [...tabelaData];
+        newData.forEach((item, index) => {
+            item.faturaAtual = (
+                parseFloat(item.consumoAtual) * editedTarifaValue
+            ).toFixed(1);
+            item.faturaDesejada = (
+                parseFloat(item.consumoDesejado) * editedTarifaValue
+            ).toFixed(1);
+            //os valores são atualizados na tabela apenas na primeira linha
+            if (index === 0) {
+                setFaturaAtual(item.faturaAtual);
+                setFaturaDesejada(item.faturaDesejada);
+            }
+        });
+        setTabelaData(newData);
+    };
+
+    const handleTariffBlur = () => {
+        setEditingTariff(false);
     };
 
     //Calcular soma consumo atual
@@ -204,8 +241,6 @@ export function Table() {
         ((somaConsumoAtual - somaConsumoDesejado) / somaConsumoAtual) *
         100
     ).toFixed(1);
-
-    //teste
 
     const [showModal, setShowModal] = useState(false);
     const [hover, setHover] = useState({
@@ -253,7 +288,6 @@ export function Table() {
     };
 
     return (
-        //teste
         <div className="relative overflow-x-auto">
             <div className="containerOptions">
                 <div className="options">
@@ -346,7 +380,6 @@ export function Table() {
                             <img src={ArHiwall} alt="Hiwall Image" />
                         </div>
                     </div>
-                    {/*<div className="blueline"></div>*/}
                     <div className="bottom">
                         <div className="backArrow">
                             {/*Esconder botão quando estiver no currentSection === "buttons"*/}
@@ -750,20 +783,6 @@ export function Table() {
                                     </h1>
                                     <div className="modal-content text-black">
                                         <div>
-                                            <h1>
-                                                Defina a quantidade de
-                                                equipamentos:
-                                            </h1>
-                                            <CurrencyInput
-                                                defaultValue={0}
-                                                allowNegativeValue={false}
-                                                allowDecimals={false}
-                                                onValueChange={(value) =>
-                                                    setQtdd(value)
-                                                }
-                                            />
-                                        </div>
-                                        <div>
                                             <h1>De um nome ao equipamento:</h1>
                                             <input
                                                 type="text"
@@ -785,7 +804,7 @@ export function Table() {
                                                         allowNegativeValue={
                                                             false
                                                         }
-                                                        allowDecimals={false}
+                                                        allowDecimals={true}
                                                         onValueChange={(
                                                             value
                                                         ) =>
@@ -908,7 +927,6 @@ export function Table() {
                                                 prefix="R$"
                                                 defaultValue={0}
                                                 decimalsLimit={2}
-                                                // send the value to tarifa
                                                 onValueChange={(value) =>
                                                     setTarifa(value)
                                                 }
@@ -927,7 +945,6 @@ export function Table() {
                         ) : (
                             <>
                                 <h1>Nova Seção</h1>
-                                {/* Adicione aqui os TextBoxes e Labels desejados */}
                                 <button onClick={handleBackToButtons}>
                                     Voltar
                                 </button>
@@ -936,13 +953,18 @@ export function Table() {
                     </div>
                 </div>
             </ReactModal>
-            {/*Chamar o handlerBanner*/}
             {tabelaData.length > 0 ? (
                 <div className="relative mb-96" onLoad={handlerBanner()}>
                     <div id="table bg-slate-600 overflow-x-auto">
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
+                                    <th
+                                        scope="col"
+                                        className="px-6 py-3 border border-gray-400"
+                                    >
+                                        EDIT.
+                                    </th>
                                     <th
                                         scope="col"
                                         className="px-6 py-3 border border-gray-400"
@@ -1033,6 +1055,14 @@ export function Table() {
                                                 : "bg-gray-100"
                                         } border border-gray-400 hover:bg-gray-200 group`}
                                     >
+                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border border-gray-400 cursor-pointer">
+                                            <div
+                                                className="flex items-center justify-center"
+                                                onClick={handleDelete}
+                                            >
+                                                <Trash />
+                                            </div>
+                                        </td>
                                         <td
                                             className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap cursor-pointer flex items-center"
                                             onClick={() =>
@@ -1089,18 +1119,45 @@ export function Table() {
                         </table>
                     </div>
 
-                    {/*MEU*/}
+                    {/*MENU*/}
 
                     <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t-4 border-blue-600">
                         <h3 className="text-gray-800 font-bold">
                             TOTAL ESTIMADO
                         </h3>
-                        <div className="flex flex-row justify-between text-black m-4">
-                            <div>
+                        <div className="flex flex-row justify-between text-black m-4   ">
+                            <div
+                                className="cursor-pointer"
+                                onClick={handleTariffClick}
+                            >
                                 <h1 className="text-gray-500">Tarifa</h1>
-                                <span className="text-blue-600 font-bold text-3xl">
-                                    R$ {tarifa}
-                                </span>
+                                {editingTariff ? (
+                                    <div className="relative">
+                                        <CurrencyInput
+                                            prefix="R$"
+                                            defaultValue={tarifa}
+                                            decimalsLimit={2}
+                                            onValueChange={handleTariffChange}
+                                            onBlur={handleTariffBlur}
+                                            className="menuTariffInput"
+                                            autoFocus
+                                        />
+                                        <div className="absolute right-5 top-1/2 transform -translate-y-1/2">
+                                            <CheckMark />
+                                            <div
+                                                className="absolute top-0 left-0 w-full h-full"
+                                                onClick={handleTariffBlur}
+                                            ></div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="flex items-center">
+                                        <span className="text-blue-600 font-bold text-3xl">
+                                            R$ {tarifa}
+                                        </span>
+                                        <Edit />
+                                    </div>
+                                )}
                             </div>
                             <div>
                                 <h1 className="text-gray-500">Consumo Atual</h1>
