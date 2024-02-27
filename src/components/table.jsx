@@ -23,7 +23,7 @@ export function Table() {
     const [consumoProcel, setConsumoProcel] = useState("");
     const [funcionamentoAtual, setFuncionamentoAtual] = useState("");
     const [funcionamentoDesejado, setFuncionamentoDesejado] = useState("");
-    const [tarifa, setTarifa] = useState("");
+    const [tarifa, setTarifa] = useState("0.7");
     const [tabelaData, setTabelaData] = useState([]);
     const [consumoAtual, setConsumoAtual] = useState("");
     const [consumoDesejado, setConsumoDesejado] = useState("");
@@ -105,8 +105,8 @@ export function Table() {
             !capacidade ||
             !consumoProcel ||
             !funcionamentoAtual ||
-            !funcionamentoDesejado ||
-            !tarifa
+            !funcionamentoDesejado
+            //!tarifa
             //!tipoConsumoProcel
         ) {
             alert("Preencha todos os campos");
@@ -262,7 +262,7 @@ export function Table() {
         setConsumoProcel("");
         setFuncionamentoAtual("");
         setFuncionamentoDesejado("");
-        setTarifa("");
+        //setTarifa("");
         //setTipoConsumoProcel("");
     };
 
@@ -291,54 +291,65 @@ export function Table() {
         <div className="relative overflow-x-auto">
             <div className="containerOptions">
                 <div className="options">
-                    <button
-                        className="options-button"
-                        //setTipo para ("hi-wall")
-                        onClick={() => {
-                            handleOpenModal();
-                            setTipo("Hi-wall");
-                        }}
-                        onMouseEnter={() => handleMouseEnter("slowly")}
-                        onMouseLeave={() => handleMouseLeave("slowly")}
-                    >
-                        <img
-                            className="Sirv image-main"
-                            src={hiwallBlue}
-                            alt="Hiwall Button"
-                        />
-                    </button>
-                    <button
-                        className="options-button"
-                        //setTipo para ("cassete")
-                        onClick={() => {
-                            handleOpenModal();
-                            setTipo("Cassete");
-                        }}
-                        onMouseEnter={() => handleMouseEnter("hiwall")}
-                        onMouseLeave={() => handleMouseLeave("hiwall")}
-                    >
-                        <img
-                            className="Sirv image-main"
-                            src={casseteBlue}
-                            alt="Hiwall Button"
-                        />
-                    </button>
-                    <button
-                        className="options-button"
-                        //setTipo para ("pisoteto")
-                        onClick={() => {
-                            handleOpenModal();
-                            setTipo("Piso-teto");
-                        }}
-                        onMouseEnter={() => handleMouseEnter("hiwall")}
-                        onMouseLeave={() => handleMouseLeave("hiwall")}
-                    >
-                        <img
-                            className="Sirv image-main"
-                            src={pisotetoBlue}
-                            alt="Hiwall Button"
-                        />
-                    </button>
+                    <div className="button-container">
+                        <button
+                            className="options-button"
+                            // setTipo para ("hi-wall")
+                            onClick={() => {
+                                handleOpenModal();
+                                setTipo("Hi-wall");
+                            }}
+                            onMouseEnter={() => handleMouseEnter("slowly")}
+                            onMouseLeave={() => handleMouseLeave("slowly")}
+                        >
+                            <img
+                                className="Sirv image-main"
+                                src={hiwallBlue}
+                                alt="Hiwall Button"
+                            />
+                        </button>
+                        <span className="label">HI-WALL</span>
+                    </div>
+
+                    <div className="button-container">
+                        <button
+                            className="options-button"
+                            // setTipo para ("cassete")
+                            onClick={() => {
+                                handleOpenModal();
+                                setTipo("Cassete");
+                            }}
+                            onMouseEnter={() => handleMouseEnter("hiwall")}
+                            onMouseLeave={() => handleMouseLeave("hiwall")}
+                        >
+                            <img
+                                className="Sirv image-main"
+                                src={casseteBlue}
+                                alt="Cassete Button"
+                            />
+                        </button>
+                        <span className="label">CASSETE</span>
+                    </div>
+
+                    <div className="button-container">
+                        <button
+                            className="options-button"
+                            // setTipo para ("pisoteto")
+                            onClick={() => {
+                                handleOpenModal();
+                                setTipo("Piso-teto");
+                            }}
+                            onMouseEnter={() => handleMouseEnter("hiwall")}
+                            onMouseLeave={() => handleMouseLeave("hiwall")}
+                        >
+                            <img
+                                className="Sirv image-main"
+                                src={pisotetoBlue}
+                                alt="Piso-teto Button"
+                            />
+                        </button>
+                        <span className="label">PISO-TETO</span>
+                    </div>
                 </div>
             </div>
             <ReactModal
@@ -350,7 +361,7 @@ export function Table() {
                         width: "50%",
                         height: "93%",
                         margin: "0 auto",
-                        borderRadius: "10px",
+                        borderRadius: "0px",
                         background: "#D6DEFA",
                         padding: "0",
                         zIndex: 1000,
@@ -381,17 +392,6 @@ export function Table() {
                         </div>
                     </div>
                     <div className="bottom">
-                        <div className="backArrow">
-                            {/*Esconder botão quando estiver no currentSection === "buttons"*/}
-                            {currentSection === "buttons" ? null : (
-                                <button
-                                    className="font-bold py-2 px-4 rounded"
-                                    onClick={handleBackToButtons}
-                                >
-                                    <Arrow />
-                                </button>
-                            )}
-                        </div>
                         {currentSection === "buttons" ? (
                             <>
                                 <div className="modal">
@@ -538,35 +538,194 @@ export function Table() {
                                         CAPACIDADE DE REFRIGERAÇÃO:
                                     </h1>
                                     <div className="inputOptionsModal">
-                                        <CurrencyInput
-                                            defaultValue={0}
-                                            allowNegativeValue={false}
-                                            allowDecimals={false}
-                                            onValueChange={(value) =>
-                                                setCapacidade(value)
+                                        <select
+                                            value={capacidade}
+                                            onChange={(e) =>
+                                                setCapacidade(e.target.value)
                                             }
-                                        />
-                                        <h1 className="text-blue-600 font-bold text-3xl">
-                                            BTU/h
-                                        </h1>
+                                        >
+                                            <option value="" disabled>
+                                                Selecione um valor...
+                                            </option>
+                                            <option value="7.000">
+                                                7.000 BTU/h
+                                            </option>
+                                            <option value="7.500">
+                                                7.500 BTU/h
+                                            </option>
+                                            <option value="8.000">
+                                                8.500 BTU/h
+                                            </option>
+                                            <option value="9.000">
+                                                9.000 BTU/h
+                                            </option>
+                                            <option value="9.500">
+                                                9.500 BTU/h
+                                            </option>
+                                            <option value="10.000">
+                                                10.000 BTU/h
+                                            </option>
+                                            <option value="10.500">
+                                                10.500 BTU/h
+                                            </option>
+                                            <option value="11.000">
+                                                11.000 BTU/h
+                                            </option>
+                                            <option value="12.000">
+                                                12.000 BTU/h
+                                            </option>
+                                            <option value="13.000">
+                                                13.000 BTU/h
+                                            </option>
+                                            <option value="15.000">
+                                                15.000 BTU/h
+                                            </option>
+                                            <option value="16.115">
+                                                16.115 BTU/h
+                                            </option>
+                                            <option value="17.000">
+                                                17.000 BTU/h
+                                            </option>
+                                            <option value="18.000">
+                                                18.000 BTU/h
+                                            </option>
+                                            <option value="19.000">
+                                                19.000 BTU/h
+                                            </option>
+                                            <option value="20.000">
+                                                20.000 BTU/h
+                                            </option>
+                                            <option value="21.000">
+                                                21.000 BTU/h
+                                            </option>
+                                            <option value="21.500">
+                                                21.500 BTU/h
+                                            </option>
+                                            <option value="22.000">
+                                                22.000 BTU/h
+                                            </option>
+                                            <option value="23.000">
+                                                23.000 BTU/h
+                                            </option>
+                                            <option value="24.000">
+                                                24.000 BTU/h
+                                            </option>
+                                            <option value="26.000">
+                                                26.000 BTU/h
+                                            </option>
+                                            <option value="27.000">
+                                                27.000 BTU/h
+                                            </option>
+                                            <option value="28.000">
+                                                28.000 BTU/h
+                                            </option>
+                                            <option value="29.000">
+                                                29.000 BTU/h
+                                            </option>
+                                            <option value="30.000">
+                                                30.000 BTU/h
+                                            </option>
+                                            <option value="31.000">
+                                                31.000 BTU/h
+                                            </option>
+                                            <option value="32.000">
+                                                32.000 BTU/h
+                                            </option>
+                                            <option value="33.000">
+                                                33.000 BTU/h
+                                            </option>
+                                            <option value="34.000">
+                                                34.000 BTU/h
+                                            </option>
+                                            <option value="35.000">
+                                                35.000 BTU/h
+                                            </option>
+                                            <option value="36.000">
+                                                36.000 BTU/h
+                                            </option>
+                                            <option value="37.000">
+                                                37.000 BTU/h
+                                            </option>
+                                            <option value="40.000">
+                                                40.000 BTU/h
+                                            </option>
+                                            <option value="41.000">
+                                                41.000 BTU/h
+                                            </option>
+                                            <option value="42.000">
+                                                42.000 BTU/h
+                                            </option>
+                                            <option value="45.000">
+                                                45.000 BTU/h
+                                            </option>
+                                            <option value="45.500">
+                                                45.500 BTU/h
+                                            </option>
+                                            <option value="46.000">
+                                                46.000 BTU/h
+                                            </option>
+                                            <option value="47.000">
+                                                47.000 BTU/h
+                                            </option>
+                                            <option value="48.000">
+                                                48.000 BTU/h
+                                            </option>
+                                            <option value="51.000">
+                                                51.000 BTU/h
+                                            </option>
+                                            <option value="51500">
+                                                51.500 BTU/h
+                                            </option>
+                                            <option value="52.000">
+                                                52.000 BTU/h
+                                            </option>
+                                            <option value="53.000">
+                                                53.000 BTU/h
+                                            </option>
+                                            <option value="54.000">
+                                                54.000 BTU/h
+                                            </option>
+                                            <option value="55.000">
+                                                55.000 BTU/h
+                                            </option>
+                                            <option value="56.000">
+                                                56.000 BTU/h
+                                            </option>
+                                            <option value="57.000">
+                                                57.000 BTU/h
+                                            </option>
+                                            <option value="58.000">
+                                                58.000 BTU/h
+                                            </option>
+                                            <option value="59.000">
+                                                59.000 BTU/h
+                                            </option>
+                                            <option value="60.000">
+                                                60.000 BTU/h
+                                            </option>
+                                        </select>
                                     </div>
                                 </div>
 
-                                <div className="modal">
-                                    <h1 className="titleBottom">Modelo:</h1>
-                                    <div className="buttonOpModal">
-                                        <div className="optionsModal">
-                                            <button
-                                                className="buttonModal"
-                                                onClick={() =>
-                                                    handleSwitchSection(
-                                                        "generic"
-                                                    )
-                                                }
-                                            >
-                                                <h1 className="titleButtonModal">
-                                                    GENÉRICO
-                                                </h1>
+                                <div className="modal-bottom">
+                                    <h1
+                                        className="titleBottom"
+                                        id="titleBottomModelo"
+                                    >
+                                        Modelo:
+                                    </h1>
+
+                                    <div className="optionsModal">
+                                        <div
+                                            className="flex flex-col items-center cursor-pointer"
+                                            onClick={() =>
+                                                handleSwitchSection("generic")
+                                            }
+                                        >
+                                            <div className="titleButtonModal">
+                                                <h1>GENÉRICO</h1>
+                                            </div>
+                                            <div className="textContainer">
                                                 <p className="textButtonModal">
                                                     Ao selecionar o modelo
                                                     “Genérico” o sistema
@@ -574,45 +733,47 @@ export function Table() {
                                                     técnicos as médias dos
                                                     consumos dos aparelhos
                                                     obtidos de “Marca X
-                                                    Capacidade”.{" "}
+                                                    Capacidade”.
                                                 </p>
-                                            </button>
-                                            <button
-                                                className="buttonModal2"
-                                                onClick={() =>
-                                                    handleSwitchSection(
-                                                        "advanced"
-                                                    )
-                                                }
-                                            >
-                                                <h1 className="titleButtonModal">
-                                                    AVANÇADO
-                                                </h1>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            className="flex flex-col items-center cursor-pointer"
+                                            onClick={() =>
+                                                handleSwitchSection("advanced")
+                                            }
+                                        >
+                                            <div className="titleButtonModal">
+                                                <h1>AVANÇADO</h1>
+                                            </div>
+                                            <div className="textContainer">
                                                 <p className="textButtonModal">
                                                     Ao selecionar “Avançado”
                                                     você deverá informar o
                                                     código de modelo do seu
-                                                    aparelho.{" "}
+                                                    aparelho.
                                                 </p>
-                                            </button>
-                                            <button
-                                                className="buttonModal3"
-                                                onClick={() =>
-                                                    handleSwitchSection(
-                                                        "custom"
-                                                    )
-                                                }
-                                            >
-                                                <h1 className="titleButtonModal">
-                                                    PERSONALIZADO
-                                                </h1>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            className="flex flex-col items-center cursor-pointer"
+                                            onClick={() =>
+                                                handleSwitchSection("custom")
+                                            }
+                                        >
+                                            <div className="titleButtonModal">
+                                                <h1>PERSONALIZADO</h1>
+                                            </div>
+                                            <div className="textContainer">
                                                 <p className="textButtonModal">
                                                     Ao selecionar
                                                     “Personalizado” você deverá
                                                     inserir algumas informações
-                                                    técnicas do aparelho.{" "}
+                                                    técnicas do aparelho.
                                                 </p>
-                                            </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -620,164 +781,191 @@ export function Table() {
                         ) : currentSection === "custom" ? (
                             <>
                                 <div className="modal">
-                                    <h1 className="titleBottom">MARCA:</h1>
-                                    <div className="inputOptionsModal">
-                                        <select
-                                            value={marca}
-                                            onChange={(e) =>
-                                                setMarca(e.target.value)
-                                            }
-                                        >
-                                            <option value="" disabled>
-                                                Selecione uma marca...
-                                            </option>
-                                            <option value="Admiral">
-                                                Admiral
-                                            </option>
-                                            <option value="Agratto">
-                                                Agratto
-                                            </option>
-                                            <option value="AIRSTAGE">
-                                                AIRSTAGE
-                                            </option>
-                                            <option value="Arfree">
-                                                Arfree
-                                            </option>
-                                            <option value="AZ">AZ</option>
-                                            <option value="BENOIT">
-                                                BENOIT
-                                            </option>
-                                            <option value="Britânia">
-                                                Britânia
-                                            </option>
-                                            <option value="Carrier">
-                                                Carrier
-                                            </option>
-                                            <option value="Comfee">
-                                                Comfee
-                                            </option>
-                                            <option value="Consul">
-                                                Consul
-                                            </option>
-                                            <option value="Daikin">
-                                                Daikin
-                                            </option>
-                                            <option value="Elbrus">
-                                                Elbrus
-                                            </option>
-                                            <option value="Electrolux">
-                                                Electrolux
-                                            </option>
-                                            <option value="ELGIN">ELGIN</option>
-                                            <option value="EMMETI">
-                                                EMMETI
-                                            </option>
-                                            <option value="EOS">EOS</option>
-                                            <option value="Equation">
-                                                Equation
-                                            </option>
-                                            <option value="Fontaine">
-                                                Fontaine
-                                            </option>
-                                            <option value="Fujitsu">
-                                                Fujitsu
-                                            </option>
-                                            <option value="GREE">GREE</option>
-                                            <option value="HISENSE">
-                                                HISENSE
-                                            </option>
-                                            <option value="Hitachi">
-                                                Hitachi
-                                            </option>
-                                            <option value="HQ">HQ</option>
-                                            <option value="Kennedy">
-                                                Kennedy
-                                            </option>
-                                            <option value="Komeco">
-                                                Komeco
-                                            </option>
-                                            <option value="LG">LG</option>
-                                            <option value="Maxiflex">
-                                                Maxiflex
-                                            </option>
-                                            <option value="Midea">Midea</option>
-                                            <option value="Modernita">
-                                                Modernita
-                                            </option>
-                                            <option value="Novexium">
-                                                Novexium
-                                            </option>
-                                            <option value="Philco">
-                                                Philco
-                                            </option>
-                                            <option value="Pioneer">
-                                                Pioneer
-                                            </option>
-                                            <option value="Pionner">
-                                                Pionner
-                                            </option>
-                                            <option value="Prime Air">
-                                                Prime Air
-                                            </option>
-                                            <option value="PSG">PSG</option>
-                                            <option value="Rinetto">
-                                                Rinetto
-                                            </option>
-                                            <option value="Samsung">
-                                                Samsung
-                                            </option>
-                                            <option value="Silvermaxi">
-                                                Silvermaxi
-                                            </option>
-                                            <option value="SIMPLEY">
-                                                SIMPLEY
-                                            </option>
-                                            <option value="Springer">
-                                                Springer
-                                            </option>
-                                            <option value="Springer Midea">
-                                                Springer Midea
-                                            </option>
-                                            <option value="TCL">TCL</option>
-                                            <option value="Techfrio">
-                                                Techfrio
-                                            </option>
-                                            <option value="Tempstar">
-                                                Tempstar
-                                            </option>
-                                            <option value="Tesla">Tesla</option>
-                                            <option value="Trane">Trane</option>
-                                            <option value="Unifrio">
-                                                Unifrio
-                                            </option>
-                                            <option value="VG">VG</option>
-                                            <option value="VIX">VIX</option>
-                                            <option value="Vogga">Vogga</option>
-                                            <option value="York">York</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="modal">
                                     <h1 className="titleBottom">
                                         CAPACIDADE DE REFRIGERAÇÃO:
                                     </h1>
                                     <div className="inputOptionsModal">
-                                        <CurrencyInput
-                                            defaultValue={0}
-                                            allowNegativeValue={false}
-                                            allowDecimals={false}
-                                            onValueChange={(value) =>
-                                                setCapacidade(value)
+                                        <select
+                                            value={capacidade}
+                                            onChange={(e) =>
+                                                setCapacidade(e.target.value)
                                             }
-                                        />
-
-                                        <h1 className="text-blue-600 font-bold text-3xl">
-                                            BTU/h
-                                        </h1>
+                                        >
+                                            <option value="" disabled>
+                                                Selecione um valor...
+                                            </option>
+                                            <option value="7.000">
+                                                7.000 BTU/h
+                                            </option>
+                                            <option value="7.500">
+                                                7.500 BTU/h
+                                            </option>
+                                            <option value="8.000">
+                                                8.500 BTU/h
+                                            </option>
+                                            <option value="9.000">
+                                                9.000 BTU/h
+                                            </option>
+                                            <option value="9.500">
+                                                9.500 BTU/h
+                                            </option>
+                                            <option value="10.000">
+                                                10.000 BTU/h
+                                            </option>
+                                            <option value="10.500">
+                                                10.500 BTU/h
+                                            </option>
+                                            <option value="11.000">
+                                                11.000 BTU/h
+                                            </option>
+                                            <option value="12.000">
+                                                12.000 BTU/h
+                                            </option>
+                                            <option value="13.000">
+                                                13.000 BTU/h
+                                            </option>
+                                            <option value="15.000">
+                                                15.000 BTU/h
+                                            </option>
+                                            <option value="16.115">
+                                                16.115 BTU/h
+                                            </option>
+                                            <option value="17.000">
+                                                17.000 BTU/h
+                                            </option>
+                                            <option value="18.000">
+                                                18.000 BTU/h
+                                            </option>
+                                            <option value="19.000">
+                                                19.000 BTU/h
+                                            </option>
+                                            <option value="20.000">
+                                                20.000 BTU/h
+                                            </option>
+                                            <option value="21.000">
+                                                21.000 BTU/h
+                                            </option>
+                                            <option value="21.500">
+                                                21.500 BTU/h
+                                            </option>
+                                            <option value="22.000">
+                                                22.000 BTU/h
+                                            </option>
+                                            <option value="23.000">
+                                                23.000 BTU/h
+                                            </option>
+                                            <option value="24.000">
+                                                24.000 BTU/h
+                                            </option>
+                                            <option value="26.000">
+                                                26.000 BTU/h
+                                            </option>
+                                            <option value="27.000">
+                                                27.000 BTU/h
+                                            </option>
+                                            <option value="28.000">
+                                                28.000 BTU/h
+                                            </option>
+                                            <option value="29.000">
+                                                29.000 BTU/h
+                                            </option>
+                                            <option value="30.000">
+                                                30.000 BTU/h
+                                            </option>
+                                            <option value="31.000">
+                                                31.000 BTU/h
+                                            </option>
+                                            <option value="32.000">
+                                                32.000 BTU/h
+                                            </option>
+                                            <option value="33.000">
+                                                33.000 BTU/h
+                                            </option>
+                                            <option value="34.000">
+                                                34.000 BTU/h
+                                            </option>
+                                            <option value="35.000">
+                                                35.000 BTU/h
+                                            </option>
+                                            <option value="36.000">
+                                                36.000 BTU/h
+                                            </option>
+                                            <option value="37.000">
+                                                37.000 BTU/h
+                                            </option>
+                                            <option value="40.000">
+                                                40.000 BTU/h
+                                            </option>
+                                            <option value="41.000">
+                                                41.000 BTU/h
+                                            </option>
+                                            <option value="42.000">
+                                                42.000 BTU/h
+                                            </option>
+                                            <option value="45.000">
+                                                45.000 BTU/h
+                                            </option>
+                                            <option value="45.500">
+                                                45.500 BTU/h
+                                            </option>
+                                            <option value="46.000">
+                                                46.000 BTU/h
+                                            </option>
+                                            <option value="47.000">
+                                                47.000 BTU/h
+                                            </option>
+                                            <option value="48.000">
+                                                48.000 BTU/h
+                                            </option>
+                                            <option value="51.000">
+                                                51.000 BTU/h
+                                            </option>
+                                            <option value="51500">
+                                                51.500 BTU/h
+                                            </option>
+                                            <option value="52.000">
+                                                52.000 BTU/h
+                                            </option>
+                                            <option value="53.000">
+                                                53.000 BTU/h
+                                            </option>
+                                            <option value="54.000">
+                                                54.000 BTU/h
+                                            </option>
+                                            <option value="55.000">
+                                                55.000 BTU/h
+                                            </option>
+                                            <option value="56.000">
+                                                56.000 BTU/h
+                                            </option>
+                                            <option value="57.000">
+                                                57.000 BTU/h
+                                            </option>
+                                            <option value="58.000">
+                                                58.000 BTU/h
+                                            </option>
+                                            <option value="59.000">
+                                                59.000 BTU/h
+                                            </option>
+                                            <option value="60.000">
+                                                60.000 BTU/h
+                                            </option>
+                                        </select>
                                     </div>
                                 </div>
 
-                                <div className="modal">
+                                <div className="modal-bottom2">
+                                    <div className="backArrow1">
+                                        {/*Esconder botão quando estiver no currentSection === "buttons"*/}
+                                        {currentSection === "buttons" ? null : (
+                                            <button
+                                                className="pb-4"
+                                                onClick={handleBackToButtons}
+                                            >
+                                                <Arrow />
+                                            </button>
+                                        )}
+                                    </div>
                                     <h1 className="titleBottom">
                                         MODELO (Personalizado):
                                     </h1>
@@ -797,23 +985,15 @@ export function Table() {
                                                 Qual o consumo do equipamento?
                                                 (Inmetro/Procel)
                                             </h1>
-                                            <div className="flex flex-row items-center">
-                                                <div>
-                                                    <CurrencyInput
-                                                        defaultValue={0}
-                                                        allowNegativeValue={
-                                                            false
-                                                        }
-                                                        allowDecimals={true}
-                                                        onValueChange={(
-                                                            value
-                                                        ) =>
-                                                            setConsumoProcel(
-                                                                value
-                                                            )
-                                                        }
-                                                    />
-                                                </div>
+                                            <div className="flex flex-row ">
+                                                <CurrencyInput
+                                                    defaultValue={0}
+                                                    allowNegativeValue={false}
+                                                    allowDecimals={true}
+                                                    onValueChange={(value) =>
+                                                        setConsumoProcel(value)
+                                                    }
+                                                />
                                                 <div className="inputOptionsModal">
                                                     <select
                                                         value={
@@ -834,16 +1014,20 @@ export function Table() {
                                                     </select>
                                                 </div>
                                             </div>
+                                            <div className="flex justify-center">
+                                                <button
+                                                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-12 mt-4"
+                                                    onClick={() =>
+                                                        handleSwitchSection(
+                                                            "custom02"
+                                                        )
+                                                    }
+                                                >
+                                                    {" "}
+                                                    Próximo
+                                                </button>
+                                            </div>
                                         </div>
-                                        <button
-                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                            onClick={() =>
-                                                handleSwitchSection("custom02")
-                                            }
-                                        >
-                                            {" "}
-                                            Próximo
-                                        </button>
                                     </div>
                                 </div>
                             </>
@@ -885,58 +1069,93 @@ export function Table() {
                                     <h1 className="titleBottom">
                                         Funcionamento atual (Horas/Dia):
                                     </h1>
-                                    <div className="modal-content text-black">
-                                        <div>
-                                            <CurrencyInput
-                                                defaultValue={0}
-                                                suffix=" horas"
-                                                allowNegativeValue={false}
-                                                allowDecimals={false}
-                                                onValueChange={(value) =>
-                                                    setFuncionamentoAtual(value)
-                                                }
-                                            />
-                                        </div>
+                                    <div className="inputOptionsModal">
+                                        <select
+                                            value={funcionamentoAtual}
+                                            onChange={(e) =>
+                                                setFuncionamentoAtual(
+                                                    e.target.value
+                                                )
+                                            }
+                                        >
+                                            <option value="" disabled>
+                                                Selecione um valor...
+                                            </option>
+                                            <option value="1">1 h/dia</option>
+                                            <option value="2">2 h/dia</option>
+                                            <option value="3">3 h/dia</option>
+                                            <option value="4">4 h/dia</option>
+                                            <option value="5">5 h/dia</option>
+                                            <option value="6">6 h/dia</option>
+                                            <option value="7">7 h/dia</option>
+                                            <option value="8">8 h/dia</option>
+                                            <option value="9">9 h/dia</option>
+                                            <option value="10">10 h/dia</option>
+                                            <option value="11">11 h/dia</option>
+                                            <option value="12">12 h/dia</option>
+                                            <option value="13">13 h/dia</option>
+                                            <option value="14">14 h/dia</option>
+                                            <option value="15">15 h/dia</option>
+                                            <option value="16">16 h/dia</option>
+                                            <option value="17">17 h/dia</option>
+                                            <option value="18">18 h/dia</option>
+                                            <option value="19">19 h/dia</option>
+                                            <option value="20">20 h/dia</option>
+                                            <option value="21">21 h/dia</option>
+                                            <option value="22">22 h/dia</option>
+                                            <option value="23">23 h/dia</option>
+                                            <option value="24">24 h/dia</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div className="modal">
                                     <h1 className="titleBottom">
                                         Funcionamento desejado (Horas/Dia):
                                     </h1>
-                                    <div className="modal-content text-black">
-                                        <div>
-                                            <CurrencyInput
-                                                defaultValue={0}
-                                                suffix=" horas"
-                                                allowNegativeValue={false}
-                                                allowDecimals={false}
-                                                onValueChange={(value) =>
-                                                    setFuncionamentoDesejado(
-                                                        value
-                                                    )
-                                                }
-                                            />
-                                        </div>
+
+                                    <div className="inputOptionsModal">
+                                        <select
+                                            value={funcionamentoDesejado}
+                                            onChange={(e) =>
+                                                setFuncionamentoDesejado(
+                                                    e.target.value
+                                                )
+                                            }
+                                        >
+                                            <option value="" disabled>
+                                                Selecione um valor...
+                                            </option>
+                                            <option value="1">1 h/dia</option>
+                                            <option value="2">2 h/dia</option>
+                                            <option value="3">3 h/dia</option>
+                                            <option value="4">4 h/dia</option>
+                                            <option value="5">5 h/dia</option>
+                                            <option value="6">6 h/dia</option>
+                                            <option value="7">7 h/dia</option>
+                                            <option value="8">8 h/dia</option>
+                                            <option value="9">9 h/dia</option>
+                                            <option value="10">10 h/dia</option>
+                                            <option value="11">11 h/dia</option>
+                                            <option value="12">12 h/dia</option>
+                                            <option value="13">13 h/dia</option>
+                                            <option value="14">14 h/dia</option>
+                                            <option value="15">15 h/dia</option>
+                                            <option value="16">16 h/dia</option>
+                                            <option value="17">17 h/dia</option>
+                                            <option value="18">18 h/dia</option>
+                                            <option value="19">19 h/dia</option>
+                                            <option value="20">20 h/dia</option>
+                                            <option value="21">21 h/dia</option>
+                                            <option value="22">22 h/dia</option>
+                                            <option value="23">23 h/dia</option>
+                                            <option value="24">24 h/dia</option>
+                                        </select>
                                     </div>
-                                </div>
-                                <div className="modal">
-                                    <h1 className="titleBottom">Tarifa: </h1>
-                                    <div className="modal-content text-black">
-                                        <div>
-                                            <CurrencyInput
-                                                prefix="R$"
-                                                defaultValue={0}
-                                                decimalsLimit={2}
-                                                onValueChange={(value) =>
-                                                    setTarifa(value)
-                                                }
-                                            />
-                                        </div>
+                                    <div className="flex justify-center">
                                         <button
-                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-12 mt-4"
                                             onClick={handleSubmit}
                                         >
-                                            {" "}
                                             Feito
                                         </button>
                                     </div>
@@ -955,91 +1174,91 @@ export function Table() {
             </ReactModal>
             {tabelaData.length > 0 ? (
                 <div className="relative mb-96" onLoad={handlerBanner()}>
-                    <div id="table bg-slate-600 overflow-x-auto">
+                    <div id="table bg-slate-600 overflow-x-auto table-auto">
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-300">
                                 <tr>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 border border-gray-400"
+                                        className="px-3 py-3 border border-gray-400"
                                     >
                                         EDIT.
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 border border-gray-400"
+                                        className="px-3 py-3 border border-gray-400"
                                     >
                                         QTDD.
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 border border-gray-400"
+                                        className="px-3 py-3 border border-gray-400"
                                     >
                                         MARCA
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 border border-gray-400"
+                                        className="px-3 py-3 border border-gray-400"
                                     >
                                         TIPO
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 border border-gray-400"
+                                        className="px-3 py-3 border border-gray-400"
                                     >
                                         MODELO (Un. Interna)
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 border border-gray-400"
+                                        className="px-3 py-3 border border-gray-400"
                                     >
                                         CAPACIDADE (BTU/h)
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 border border-gray-400"
+                                        className="px-3 py-3 border border-gray-400"
                                     >
                                         CONSUMO PROCEL kWh/mês
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 border border-gray-400"
+                                        className="px-3 py-3 border border-gray-400"
                                     >
                                         FUNCIONAMENTO ATUAL (Horas/Dia)
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 border border-gray-400"
+                                        className="px-3 py-3 border border-gray-400"
                                     >
                                         FUNCIONAMENTO DESEJADO (Horas/Dia)
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 border border-gray-400"
+                                        className="px-3 py-3 border border-gray-400"
                                     >
                                         CONSUMO ATUAL (kW/mês)
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 border border-gray-400"
+                                        className="px-3 py-3 border border-gray-400"
                                     >
                                         CONSUMO DESEJADO (kW/mês)
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 border border-gray-400"
+                                        className="px-3 py-3 border border-gray-400"
                                     >
                                         FATURA ATUAL (R$)
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 border border-gray-400"
+                                        className="px-3 py-3 border border-gray-400"
                                     >
                                         FATURA DESEJADA (R$)
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 border border-gray-400"
+                                        className="px-3 py-3 border border-gray-400"
                                     >
                                         ECONOMIA (%)
                                     </th>
@@ -1077,40 +1296,40 @@ export function Table() {
                                             <Icon />
                                             {item.qtdd}
                                         </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
                                             {item.marca}
                                         </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
                                             {item.tipo}
                                         </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
                                             {item.nome}
                                         </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
                                             {item.capacidade}
                                         </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
                                             {item.convertedConsumoProcel}
                                         </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
                                             {item.funcionamentoAtual}
                                         </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
                                             {item.funcionamentoDesejado}
                                         </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
                                             {item.consumoAtual || 0}
                                         </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
                                             {item.consumoDesejado || 0}
                                         </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
                                             {item.faturaAtual || 0}
                                         </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
                                             {item.faturaDesejada || 0}
                                         </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
                                             {item.economia + "%"}
                                         </td>
                                     </tr>
