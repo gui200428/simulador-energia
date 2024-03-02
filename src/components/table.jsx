@@ -67,10 +67,10 @@ export function Table() {
         ).toFixed(1);
         newData[index].faturaAtual = (
             parseFloat(newData[index].consumoAtual) * tarifa
-        ).toFixed(1);
+        ).toFixed(2);
         newData[index].faturaDesejada = (
             parseFloat(newData[index].consumoDesejado) * tarifa
-        ).toFixed(1);
+        ).toFixed(2);
         newData[index].economia = (
             ((parseFloat(newData[index].consumoAtual) -
                 parseFloat(newData[index].consumoDesejado)) /
@@ -133,10 +133,10 @@ export function Table() {
         ).toFixed(1); // decimal
         setConsumoDesejado(consumoDesejado); // Atualiza o valor de consumoDesejado
 
-        const faturaAtual = (consumoAtual * tarifa).toFixed(1); // decimal
+        const faturaAtual = (consumoAtual * tarifa).toFixed(2); // decimal
         setFaturaAtual(faturaAtual); // Atualiza o valor de faturaAtual
 
-        const faturaDesejada = (consumoDesejado * tarifa).toFixed(1); // decimal
+        const faturaDesejada = (consumoDesejado * tarifa).toFixed(2); // decimal
         setFaturaDesejada(faturaDesejada); // Atualiza o valor de faturaDesejada
         // remover casas decimais depois da virgula na fariavel economia
 
@@ -187,16 +187,26 @@ export function Table() {
     };
 
     const handleTariffChange = (editedTarifaValue) => {
-        setTarifa(editedTarifaValue);
+        // se o valor for nulo ou vazio ou undefined, não permitir
+        if (
+            editedTarifaValue === null ||
+            editedTarifaValue === "" ||
+            editedTarifaValue === undefined
+        ) {
+            setTarifa(tarifa);
+            return;
+        } else {
+            setTarifa(editedTarifaValue);
+        }
         //atualizar valores da tabela
         const newData = [...tabelaData];
         newData.forEach((item, index) => {
             item.faturaAtual = (
                 parseFloat(item.consumoAtual) * editedTarifaValue
-            ).toFixed(1);
+            ).toFixed(2);
             item.faturaDesejada = (
                 parseFloat(item.consumoDesejado) * editedTarifaValue
-            ).toFixed(1);
+            ).toFixed(2);
             //os valores são atualizados na tabela apenas na primeira linha
             if (index === 0) {
                 setFaturaAtual(item.faturaAtual);
@@ -371,26 +381,26 @@ export function Table() {
                     },
                 }}
             >
-                <div className="modal-conteiner">
-                    <div className="top">
-                        <div className="logoModal">
-                            {/*Muda o src de acordo com a variavel "tipo"*/}
-                            <img
-                                src={
-                                    tipo === "Hi-wall"
-                                        ? hiwallBlue
-                                        : tipo === "Cassete"
-                                        ? casseteBlue
-                                        : pisotetoBlue
-                                }
-                                alt="Hiwall Logo"
-                            />
-                            <h1>{tipo}</h1>
-                        </div>
-                        <div className="imgAr">
-                            <img src={ArHiwall} alt="Hiwall Image" />
-                        </div>
+                <div className="top">
+                    <div className="logoModal">
+                        {/*Muda o src de acordo com a variavel "tipo"*/}
+                        <img
+                            src={
+                                tipo === "Hi-wall"
+                                    ? hiwallBlue
+                                    : tipo === "Cassete"
+                                    ? casseteBlue
+                                    : pisotetoBlue
+                            }
+                            alt="Hiwall Logo"
+                        />
+                        <h1>{tipo}</h1>
                     </div>
+                    <div className="imgAr">
+                        <img src={ArHiwall} alt="Hiwall Image" />
+                    </div>
+                </div>
+                <div className="modal-conteiner">
                     <div className="bottom">
                         {currentSection === "buttons" ? (
                             <>
@@ -974,6 +984,7 @@ export function Table() {
                                             <h1>De um nome ao equipamento:</h1>
                                             <input
                                                 type="text"
+                                                placeholder="Nome"
                                                 value={nome}
                                                 onChange={(e) =>
                                                     setNome(e.target.value)
@@ -987,11 +998,20 @@ export function Table() {
                                             </h1>
                                             <div className="flex flex-row ">
                                                 <CurrencyInput
-                                                    defaultValue={0}
+                                                    decimalSeparator=","
+                                                    groupSeparator="."
+                                                    placeholder="Consumo"
                                                     allowNegativeValue={false}
                                                     allowDecimals={true}
-                                                    onValueChange={(value) =>
-                                                        setConsumoProcel(value)
+                                                    onValueChange={(
+                                                        valueString
+                                                    ) =>
+                                                        setConsumoProcel(
+                                                            valueString.replace(
+                                                                ",",
+                                                                "."
+                                                            )
+                                                        )
                                                     }
                                                 />
                                                 <div className="inputOptionsModal">
@@ -1016,7 +1036,7 @@ export function Table() {
                                             </div>
                                             <div className="flex justify-center">
                                                 <button
-                                                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-12 mt-4"
+                                                    className="actionButton font-bold py-2 px-12 mt-4"
                                                     onClick={() =>
                                                         handleSwitchSection(
                                                             "custom02"
@@ -1024,7 +1044,7 @@ export function Table() {
                                                     }
                                                 >
                                                     {" "}
-                                                    Próximo
+                                                    Feito
                                                 </button>
                                             </div>
                                         </div>
@@ -1153,7 +1173,7 @@ export function Table() {
                                     </div>
                                     <div className="flex justify-center">
                                         <button
-                                            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-12 mt-4"
+                                            className="actionButton font-bold py-2 px-12 mt-4"
                                             onClick={handleSubmit}
                                         >
                                             Feito
@@ -1173,191 +1193,229 @@ export function Table() {
                 </div>
             </ReactModal>
             {tabelaData.length > 0 ? (
-                <div className="relative mb-96" onLoad={handlerBanner()}>
-                    <div id="table bg-slate-600 overflow-x-auto table-auto">
-                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead className="text-xs text-gray-700 uppercase bg-gray-300">
-                                <tr>
-                                    <th
-                                        scope="col"
-                                        className="px-3 py-3 border border-gray-400"
-                                    >
-                                        EDIT.
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="px-3 py-3 border border-gray-400"
-                                    >
-                                        QTDD.
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="px-3 py-3 border border-gray-400"
-                                    >
-                                        MARCA
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="px-3 py-3 border border-gray-400"
-                                    >
-                                        TIPO
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="px-3 py-3 border border-gray-400"
-                                    >
-                                        MODELO (Un. Interna)
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="px-3 py-3 border border-gray-400"
-                                    >
-                                        CAPACIDADE (BTU/h)
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="px-3 py-3 border border-gray-400"
-                                    >
-                                        CONSUMO PROCEL kWh/mês
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="px-3 py-3 border border-gray-400"
-                                    >
-                                        FUNCIONAMENTO ATUAL (Horas/Dia)
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="px-3 py-3 border border-gray-400"
-                                    >
-                                        FUNCIONAMENTO DESEJADO (Horas/Dia)
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="px-3 py-3 border border-gray-400"
-                                    >
-                                        CONSUMO ATUAL (kW/mês)
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="px-3 py-3 border border-gray-400"
-                                    >
-                                        CONSUMO DESEJADO (kW/mês)
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="px-3 py-3 border border-gray-400"
-                                    >
-                                        FATURA ATUAL (R$)
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="px-3 py-3 border border-gray-400"
-                                    >
-                                        FATURA DESEJADA (R$)
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        className="px-3 py-3 border border-gray-400"
-                                    >
-                                        ECONOMIA (%)
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {tabelaData.map((item, index) => (
-                                    <tr
-                                        key={index}
-                                        className={`${
-                                            index % 2 === 0
-                                                ? "bg-white"
-                                                : "bg-gray-100"
-                                        } border border-gray-400 hover:bg-gray-200 group`}
-                                    >
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border border-gray-400 cursor-pointer">
-                                            <div
-                                                className="flex items-center justify-center"
-                                                onClick={handleDelete}
-                                            >
-                                                <Trash />
-                                            </div>
-                                        </td>
-                                        <td
-                                            className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap cursor-pointer flex items-center"
-                                            onClick={() =>
-                                                handleQtddChange(
-                                                    index,
-                                                    prompt(
-                                                        "Editar quantidade: "
-                                                    )
-                                                )
-                                            }
+                <div
+                    className="flex justify-center items-center mb-96 px-5"
+                    onLoad={handlerBanner()}
+                >
+                    <table className="tableView text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead className="text-xs text-gray-700 uppercase bg-gray-300">
+                            <tr>
+                                <th
+                                    scope="col"
+                                    className="px-3 py-3 border border-gray-400"
+                                >
+                                    EDIT.
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-3 py-3 border border-gray-400"
+                                >
+                                    QTDD.
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-3 py-3 border border-gray-400"
+                                >
+                                    MARCA
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-3 py-3 border border-gray-400"
+                                >
+                                    TIPO
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-3 py-3 border border-gray-400"
+                                >
+                                    MODELO <br /> (Un. Interna)
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-3 py-3 border border-gray-400"
+                                >
+                                    CAPACIDADE <br /> (BTU/h)
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-3 py-3 border border-gray-400"
+                                >
+                                    CONSUMO PROCEL <br /> (kWh/mês)
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-3 py-3 border border-gray-400"
+                                >
+                                    FUNCIONAMENTO ATUAL <br /> (Horas/Dia)
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-3 py-3 border border-gray-400"
+                                >
+                                    FUNCIONAMENTO DESEJADO <br /> (Horas/Dia)
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-3 py-3 border border-gray-400"
+                                >
+                                    CONSUMO ATUAL <br /> (kW/mês)
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-3 py-3 border border-gray-400"
+                                >
+                                    CONSUMO DESEJADO <br /> (kW/mês)
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-3 py-3 border border-gray-400"
+                                >
+                                    FATURA ATUAL <br /> (R$)
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-3 py-3 border border-gray-400"
+                                >
+                                    FATURA DESEJADA <br /> (R$)
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-3 py-3 border border-gray-400"
+                                >
+                                    ECONOMIA <br /> (%)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {tabelaData.map((item, index) => (
+                                <tr
+                                    key={index}
+                                    className={`${
+                                        index % 2 === 0
+                                            ? "bg-white"
+                                            : "bg-gray-100"
+                                    } border border-gray-400 hover:bg-gray-200 group`}
+                                >
+                                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border border-gray-400 cursor-pointer">
+                                        <div
+                                            className="flex items-center justify-center"
+                                            onClick={handleDelete}
                                         >
-                                            <Icon />
-                                            {item.qtdd}
-                                        </td>
-                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
-                                            {item.marca}
-                                        </td>
-                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
-                                            {item.tipo}
-                                        </td>
-                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
-                                            {item.nome}
-                                        </td>
-                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
-                                            {item.capacidade}
-                                        </td>
-                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
-                                            {item.convertedConsumoProcel}
-                                        </td>
-                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
-                                            {item.funcionamentoAtual}
-                                        </td>
-                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
-                                            {item.funcionamentoDesejado}
-                                        </td>
-                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
-                                            {item.consumoAtual || 0}
-                                        </td>
-                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
-                                            {item.consumoDesejado || 0}
-                                        </td>
-                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
-                                            {item.faturaAtual || 0}
-                                        </td>
-                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
-                                            {item.faturaDesejada || 0}
-                                        </td>
-                                        <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
-                                            {item.economia + "%"}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                            <Trash />
+                                        </div>
+                                    </td>
+                                    <td
+                                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap cursor-pointer flex items-center"
+                                        onClick={() =>
+                                            handleQtddChange(
+                                                index,
+                                                prompt(
+                                                    "Editar quantidade: "
+                                                ).slice(0, 7)
+                                            )
+                                        }
+                                    >
+                                        <Icon />
+                                        {item.qtdd}
+                                    </td>
+                                    <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        {item.marca}
+                                    </td>
+                                    <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        {item.tipo}
+                                    </td>
+                                    <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        {item.nome}
+                                    </td>
+                                    <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        {item.capacidade}
+                                    </td>
+                                    <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        {item.convertedConsumoProcel
+                                            .replace(".", ",")
+                                            .replace(/,0$/, "")}
+                                    </td>
+                                    <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        {item.funcionamentoAtual}
+                                    </td>
+                                    <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        {item.funcionamentoDesejado}
+                                    </td>
+                                    <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        {item.consumoAtual
+                                            .replace(".", ",")
+                                            .replace(/,0$/, "") || 0}
+                                    </td>
+                                    <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        {item.consumoDesejado
+                                            .replace(".", ",")
+                                            .replace(/,0$/, "") || 0}
+                                    </td>
+                                    <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        {item.faturaAtual
+                                            .replace(".", ",")
+                                            .replace(/,00$/, "") || 0}
+                                    </td>
+                                    <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        {item.faturaDesejada
+                                            .replace(".", ",")
+                                            .replace(/,00$/, "") || 0}
+                                    </td>
+                                    <td className="px-3 py-1 font-medium text-gray-900 whitespace-nowrap border border-gray-400">
+                                        {item.economia
+                                            .replace(".", ",")
+                                            .replace(/,0$/, "") + "%"}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
 
                     {/*MENU*/}
 
-                    <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t-4 border-blue-600">
-                        <h3 className="text-gray-800 font-bold">
+                    <div id="menu">
+                        <h3 className="text-gray-800 font-bold absolute">
                             TOTAL ESTIMADO
                         </h3>
-                        <div className="flex flex-row justify-between text-black m-4   ">
+                        <div
+                            className="flex flex-row justify-between text-black m-4"
+                            id="menuInfo"
+                        >
                             <div
                                 className="cursor-pointer"
                                 onClick={handleTariffClick}
                             >
-                                <h1 className="text-gray-500">Tarifa</h1>
+                                <h1 className="text-markGrey">Tarifa</h1>
                                 {editingTariff ? (
                                     <div className="relative">
                                         <CurrencyInput
-                                            prefix="R$"
                                             defaultValue={tarifa}
+                                            intlConfig={{
+                                                locale: "pt-BR",
+                                                currency: "BRL",
+                                            }}
+                                            decimalSeparator=","
+                                            groupSeparator="."
                                             decimalsLimit={2}
-                                            onValueChange={handleTariffChange}
+                                            allowNegativeValue={false}
+                                            allowDecimals={true}
+                                            maxLength="7"
+                                            onValueChange={(valueString) => {
+                                                if (valueString !== undefined) {
+                                                    handleTariffChange(
+                                                        valueString.replace(
+                                                            ",",
+                                                            "."
+                                                        )
+                                                    );
+                                                }
+                                            }}
                                             onBlur={handleTariffBlur}
+                                            onKeyDown={(event) => {
+                                                if (event.key === "Enter") {
+                                                    handleTariffBlur();
+                                                }
+                                            }}
                                             className="menuTariffInput"
                                             autoFocus
                                         />
@@ -1372,51 +1430,60 @@ export function Table() {
                                 ) : (
                                     <div className="flex items-center">
                                         <span className="text-blue-600 font-bold text-3xl">
-                                            R$ {tarifa}
+                                            R$ {tarifa.replace(".", ",")}
                                         </span>
                                         <Edit />
                                     </div>
                                 )}
                             </div>
                             <div>
-                                <h1 className="text-gray-500">Consumo Atual</h1>
-                                <span className="text-gray-300 font-bold text-3xl">
-                                    {somaConsumoAtual} kW/mês
+                                <h1 className="text-markGrey">Consumo Atual</h1>
+                                <span className="text-lightGrey font-bold text-3xl">
+                                    {somaConsumoAtual
+                                        .replace(".", ",")
+                                        .replace(/,0$/, "")}
+                                    kW/mês
                                 </span>
                             </div>
                             <div>
-                                <h1 className="text-gray-500">
+                                <h1 className="text-markGrey">
                                     Consumo desejado
                                 </h1>
                                 <span className="text-blue-600 font-bold text-3xl">
-                                    {somaConsumoDesejado} kW/mês
+                                    {somaConsumoDesejado
+                                        .replace(".", ",")
+                                        .replace(/,0$/, "")}
+                                    kW/mês
                                 </span>
                             </div>
                             <div>
-                                <h1 className="text-gray-500">Fatura Atual</h1>
-                                <span className="text-gray-300 font-bold text-3xl">
-                                    R$ {somaFaturaAtual}
+                                <h1 className="text-markGrey">Fatura Atual</h1>
+                                <span className="text-lightGrey font-bold text-3xl">
+                                    R$ {somaFaturaAtual.replace(".", ",")}
                                 </span>
                             </div>
                             <div>
-                                <h1 className="text-gray-500">
+                                <h1 className="text-markGrey">
                                     Fatura Desejada
                                 </h1>
                                 <span className="text-blue-600 font-bold text-3xl">
-                                    R$ {somaFaturaDesejada}
+                                    R$ {somaFaturaDesejada.replace(".", ",")}
                                 </span>
                             </div>
                             <div>
-                                <h1 className="text-gray-500">Economia</h1>
+                                <h1 className="text-markGrey">Economia</h1>
                                 <span className="text-blue-600 font-bold text-3xl">
-                                    {economiaTotal} %
+                                    {economiaTotal
+                                        .replace(".", ",")
+                                        .replace(/,0$/, "")}
+                                    %
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
             ) : (
-                <div className="text-black font-thin text-center  p-8 infoOptions">
+                <div className="text-black font-thin text-center  p-8 mb-8 infoOptions">
                     <p>Selecione acima para adicionar um equipamento</p>
                 </div>
             )}
