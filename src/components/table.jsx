@@ -106,8 +106,6 @@ export function Table() {
             !consumoProcel ||
             !funcionamentoAtual ||
             !funcionamentoDesejado
-            //!tarifa
-            //!tipoConsumoProcel
         ) {
             alert("Preencha todos os campos");
             return;
@@ -167,7 +165,6 @@ export function Table() {
         setTabelaData([...tabelaData, newData]);
 
         // Limpa os campos do modal
-        // Os inputs não
         setQtdd("");
         setMarca("");
         setTipo("");
@@ -176,8 +173,6 @@ export function Table() {
         setConsumoProcel("");
         setFuncionamentoAtual("");
         setFuncionamentoDesejado("");
-        //setTarifa("");
-        //setTipoConsumoProcel("");
     };
 
     const [editingTariff, setEditingTariff] = useState(false);
@@ -272,8 +267,6 @@ export function Table() {
         setConsumoProcel("");
         setFuncionamentoAtual("");
         setFuncionamentoDesejado("");
-        //setTarifa("");
-        //setTipoConsumoProcel("");
     };
 
     const handleCloseModal = () => {
@@ -722,7 +715,7 @@ export function Table() {
                                         className="titleBottom"
                                         id="titleBottomModelo"
                                     >
-                                        Modelo:
+                                        MODELO:
                                     </h1>
 
                                     <div className="optionsModal">
@@ -1036,7 +1029,7 @@ export function Table() {
                                             </div>
                                             <div className="flex justify-center">
                                                 <button
-                                                    className="actionButton font-bold py-2 px-12 mt-4"
+                                                    className="actionButton font-bold py-2 px-16 mt-10"
                                                     onClick={() =>
                                                         handleSwitchSection(
                                                             "custom02"
@@ -1128,7 +1121,7 @@ export function Table() {
                                         </select>
                                     </div>
                                 </div>
-                                <div className="modal">
+                                <div className="modal-bottom4">
                                     <h1 className="titleBottom">
                                         Funcionamento desejado (Horas/Dia):
                                     </h1>
@@ -1173,7 +1166,7 @@ export function Table() {
                                     </div>
                                     <div className="flex justify-center">
                                         <button
-                                            className="actionButton font-bold py-2 px-12 mt-4"
+                                            className="actionButton font-bold py-2 px-16 mt-10"
                                             onClick={handleSubmit}
                                         >
                                             Feito
